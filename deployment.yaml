@@ -1,0 +1,44 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: aerospike
+  labels:
+    app: aerospike
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aerospike
+  template:
+    metadata:
+      labels:
+        app: aerospike
+    spec:
+      containers:
+        - name: aerospike
+          image: aerospike/aerospike-server
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: def-0
+              containerPort: 3000
+              protocol: TCP
+            - name: def-1
+              containerPort: 3001
+              protocol: TCP
+            - name: def-2
+              containerPort: 3002
+              protocol: TCP
+            - name: def-3
+              containerPort: 3003
+              protocol: TCP
+          command: ["/usr/bin/asd"]
+          args: ["--foreground","--config-file","/opt/aerospike/etc/aerospike.conf"]
+          volumeMounts:
+            - name: config
+              mountPath: /opt/aerospike/etc/
+              readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: aerospike
+

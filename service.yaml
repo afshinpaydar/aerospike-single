@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: aerospike
+  labels:
+    app: aerospike
+spec:
+  type: ClusterIP
+  externalIPs:
+    - 192.168.110.114
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: def-0
+  selector:
+    app: aerospike
